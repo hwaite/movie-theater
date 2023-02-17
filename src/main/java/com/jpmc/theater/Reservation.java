@@ -1,17 +1,18 @@
 package com.jpmc.theater;
 
-public class Reservation {
-    private Customer customer;
-    private Showing showing;
-    private int audienceCount;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Objects;
+import java.util.stream.Stream;
 
-    public Reservation(Customer customer, Showing showing, int audienceCount) {
-        this.customer = customer;
-        this.showing = showing;
-        this.audienceCount = audienceCount;
-    }
-
-    public double totalFee() {
-        return showing.getMovieFee() * audienceCount;
+public record Reservation(
+    LocalDate date,
+    Customer customer,
+    Showing showing,
+    int audienceCount,
+    BigDecimal price
+) {
+    public Reservation {
+        Stream.of(date, customer, showing, price).forEach(Objects::requireNonNull);
     }
 }
