@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -20,11 +21,11 @@ import org.junit.jupiter.api.Test;
 
 /** @see Theater */
 class TheaterTest {
-    private static final Theater THEATER = new Theater();
+    private final Theater theater = new Theater();
 
     @Test
     void testTotalFee() {
-        final Reservation reservation = THEATER.reserve(
+        final Reservation reservation = theater.reserve(
             new Customer("John Doe"), 2, 4, LocalDate.of(2023, 2, 17)
         );
         Assertions.assertEquals(BigDecimal.valueOf(37.48),  reservation.price());
@@ -47,7 +48,7 @@ class TheaterTest {
             Matchers.comparesEqualTo(
                 (
                     new Theater(
-                        List.of(
+                        Stream.of(
                             new Showing(
                                 new Movie("title", Duration.ofMinutes(1), 100), "12:00"
                             )
@@ -67,7 +68,7 @@ class TheaterTest {
             Matchers.comparesEqualTo(
                 (
                     new Theater(
-                        List.of(
+                        Stream.of(
                             new Showing(
                                 new Movie("title", Duration.ofMinutes(1), 5), "12:00"
                             )
@@ -84,12 +85,12 @@ class TheaterTest {
      * @see PrettyScheduleFormat
      */
     @Test
-    void testPrettyPrint() {THEATER.printSchedule(new PrettyScheduleFormat());}
+    void testPrettyPrint() {theater.printSchedule(new PrettyScheduleFormat());}
 
     /**
      * No assertions but we can verify that printing JSON schedule doesn't yield exception.
      * @see JsonScheduleFormat
      */
     @Test
-    void testJsonPrint() {THEATER.printSchedule(new JsonScheduleFormat());}
+    void testJsonPrint() {theater.printSchedule(new JsonScheduleFormat());}
 }

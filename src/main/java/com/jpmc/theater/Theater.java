@@ -19,9 +19,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 public class Theater {
     /** Sample movie used in main method and unit tests. */
     static final Movie SPIDER_MAN =
@@ -34,7 +32,7 @@ public class Theater {
      new Movie("The Batman", Duration.ofMinutes(95), 9, false);
 
     /** Sample showings used in main method and unit tests. */
-    public static final Iterable<? extends Showing> DEFAULT_SHOWINGS = List.of(
+    public static final List<? extends Showing> DEFAULT_SHOWINGS = List.of(
         new Showing(TURNING_RED, "9:00"),
         new Showing(SPIDER_MAN, "11:00"),
         new Showing(THE_BATMAN, "12:50"),
@@ -64,29 +62,24 @@ public class Theater {
         new TimeSpanDiscountStrategy("11:00", "16:00", 0.25)
      );
 
-
     @NonNull
-    private final List<? extends Showing> schedule;
+    private final List<? extends Showing> showings;
 
     @NonNull
     private final Iterable<? extends DiscountStrategy> discountStrategies;
 
-    public Theater() {this(DEFAULT_SHOWINGS);}
+    public Theater() {this(DEFAULT_SHOWINGS.stream());}
 
-    public Theater(Iterable<? extends Showing> showings) {
+    public Theater(Stream<? extends Showing> showings) {
         this(showings, DEFAULT_DISCOUNT_STRATEGIES);
     }
 
     public Theater(
-        Iterable<? extends Showing> showings,
+        Stream<? extends Showing> showings,
         Iterable<? extends DiscountStrategy> discountStrategies
     ) {
-        this(
-            StreamSupport.stream(showings.spliterator(), false)
-                .sorted(Comparator.comparing(Showing::startTime))
-                .toList(),
-            discountStrategies
-        );
+        this.showings = showings.sorted(Comparator.comparing(Showing::startTime)).toList();
+        this.discountStrategies = discountStrategies;
     }
 
     public Reservation reserve(Customer customer, int sequence, int quantity) {
@@ -101,7 +94,7 @@ public class Theater {
         return new Reservation(
             date,
             customer,
-            schedule.get(idx),
+            showings.get(idx),
             quantity,
             getPrice(date, idx).multiply(BigDecimal.valueOf(quantity))
         );
@@ -109,18 +102,18 @@ public class Theater {
 
     public void printSchedule(ScheduleFormat format) {
         final LocalDate today = LocalDate.now();
-        format.print(today, schedule, idx -> getPrice(today, idx));
+        format.print(today, showings, idx -> getPrice(today, idx));
     }
 
     /** @param idx 0-indexed show offset. */
     private BigDecimal getPrice(LocalDate date, int idx) {
-        return schedule.get(idx).movie().price().subtract(getDiscount(date, idx));
+        return showings.get(idx).movie().price().subtract(getDiscount(date, idx));
     }
 
     /** @param idx 0-indexed show selection. */
     private BigDecimal getDiscount(LocalDate date, int idx) {
         return StreamSupport.stream(discountStrategies.spliterator(), false)
-            .map(strat -> strat.getDiscount(date, schedule, idx))
+            .map(strat -> strat.getDiscount(date, showings, idx))
             .max(Comparator.naturalOrder())
             .map(discount -> discount.setScale(2, RoundingMode.CEILING))
             .orElse(BigDecimal.ZERO);
