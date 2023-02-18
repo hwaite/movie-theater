@@ -18,8 +18,6 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 /** @see Theater */
 class TheaterTest {
     private static final Theater THEATER = new Theater();
@@ -29,7 +27,7 @@ class TheaterTest {
         final Reservation reservation = THEATER.reserve(
             new Customer("John Doe"), 2, 4, LocalDate.of(2023, 2, 17)
         );
-        assertEquals(BigDecimal.valueOf(37.48),  reservation.price());
+        Assertions.assertEquals(BigDecimal.valueOf(37.48),  reservation.price());
     }
 
     /**

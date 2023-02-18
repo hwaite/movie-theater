@@ -1,11 +1,11 @@
 package com.jpmc.theater.discount;
 
-import com.jpmc.theater.Schedule;
 import com.jpmc.theater.Showing;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -37,8 +37,10 @@ public class TimeSpanDiscountStrategy implements DiscountStrategy {
 	}
 
 	@Override
-	public BigDecimal getDiscount(LocalDate date, Schedule schedule, int idx) {
-		final Showing showing = schedule.getShowings().get(idx);
+	public BigDecimal getDiscount(
+		LocalDate date, List<? extends Showing> showings, int idx
+	) {
+		final Showing showing = showings.get(idx);
 		final LocalTime startTime = showing.startTime();
 		return
 		 startTime.isBefore(start) || startTime.isAfter(end) ?

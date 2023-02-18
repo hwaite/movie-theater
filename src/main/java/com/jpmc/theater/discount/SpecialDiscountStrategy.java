@@ -1,10 +1,11 @@
 package com.jpmc.theater.discount;
 
 import com.jpmc.theater.Movie;
-import com.jpmc.theater.Schedule;
+import com.jpmc.theater.Showing;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import lombok.NonNull;
@@ -25,8 +26,10 @@ public class SpecialDiscountStrategy implements DiscountStrategy {
 	public SpecialDiscountStrategy(double discount) {this(BigDecimal.valueOf(discount));}
 
 	@Override
-	public BigDecimal getDiscount(LocalDate date, Schedule schedule, int idx) {
-		return Optional.of(schedule.getShowings().get(idx).movie())
+	public BigDecimal getDiscount(
+		LocalDate date, List<? extends Showing> showings, int idx
+	) {
+		return Optional.of(showings.get(idx).movie())
 			.filter(Movie::special)
 			.map(Movie::price)
 			.map(discount::multiply)

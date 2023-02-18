@@ -66,7 +66,7 @@ public class Theater {
 
 
     @NonNull
-    private final Schedule schedule;
+    private final List<? extends Showing> schedule;
 
     @NonNull
     private final Iterable<? extends DiscountStrategy> discountStrategies;
@@ -82,7 +82,9 @@ public class Theater {
         Iterable<? extends DiscountStrategy> discountStrategies
     ) {
         this(
-            new Schedule(StreamSupport.stream(showings.spliterator(), false)),
+            StreamSupport.stream(showings.spliterator(), false)
+                .sorted(Comparator.comparing(Showing::startTime))
+                .toList(),
             discountStrategies
         );
     }
@@ -99,7 +101,7 @@ public class Theater {
         return new Reservation(
             date,
             customer,
-            schedule.getShowings().get(idx),
+            schedule.get(idx),
             quantity,
             getPrice(date, idx).multiply(BigDecimal.valueOf(quantity))
         );
@@ -112,9 +114,7 @@ public class Theater {
 
     /** @param idx 0-indexed show offset. */
     private BigDecimal getPrice(LocalDate date, int idx) {
-        return schedule.getShowings().get(idx).movie().price().subtract(
-            getDiscount(date, idx)
-        );
+        return schedule.get(idx).movie().price().subtract(getDiscount(date, idx));
     }
 
     /** @param idx 0-indexed show selection. */

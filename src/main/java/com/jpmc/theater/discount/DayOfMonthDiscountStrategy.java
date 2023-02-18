@@ -1,9 +1,10 @@
 package com.jpmc.theater.discount;
 
-import com.jpmc.theater.Schedule;
+import com.jpmc.theater.Showing;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,9 @@ public class DayOfMonthDiscountStrategy implements DiscountStrategy {
 	}
 
 	@Override
-	public BigDecimal getDiscount(LocalDate date, Schedule schedule, int idx) {
+	public BigDecimal getDiscount(
+		LocalDate date, List<? extends Showing> showings, int idx
+	) {
 		return date.getDayOfMonth() == dayOfMonth ? discount : BigDecimal.ZERO;
 	}
 }

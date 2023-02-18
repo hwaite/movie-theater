@@ -1,16 +1,19 @@
 package com.jpmc.theater.schedule;
 
-import com.jpmc.theater.Schedule;
+import com.jpmc.theater.Showing;
 
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.function.Function;
 
 public class PrettyScheduleFormat implements ScheduleFormat {
     @Override
     public void print(
-        LocalDate date, Schedule schedule, Function<Integer, BigDecimal> priceFunction
+        LocalDate date,
+        List<? extends Showing> showings,
+        Function<Integer, BigDecimal> priceFunction
     ) {
         System.out.println(date);
         System.out.println("===================================================");
@@ -18,7 +21,7 @@ public class PrettyScheduleFormat implements ScheduleFormat {
         // keep track of movie index
         final int[] idxRef = new int[1];
 
-        schedule.getShowings().forEach(
+        showings.forEach(
             showing -> {
                 System.out.printf(
                     "%d: %s %s %s $%s%n",
