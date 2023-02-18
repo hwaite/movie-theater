@@ -17,20 +17,14 @@ import org.junit.jupiter.api.Test;
 /** @see DayOfMonthDiscountStrategy */
 class DayOfMonthDiscountStrategyTest {
     private final Schedule schedule = new Schedule(
-        Stream.of(
-            new Showing(
-                new Movie("title", Duration.ofHours(1), 10), "9:00"
-            )
-        )
+        Stream.of(new Showing(new Movie("title", Duration.ofHours(1), 10), "9:00"))
     );
-    private final DiscountStrategy strategy =
-     new DayOfMonthDiscountStrategy(3, 1);
+    private final DiscountStrategy strategy = new DayOfMonthDiscountStrategy(3, 1);
 
     @Test
     void testMiss() {
         Assertions.assertEquals(
-            BigDecimal.ZERO,
-            strategy.getDiscount(LocalDate.of(2023, 2, 17), schedule, 0)
+            BigDecimal.ZERO, strategy.getDiscount(LocalDate.of(2023, 2, 17), schedule, 0)
         );
     }
 

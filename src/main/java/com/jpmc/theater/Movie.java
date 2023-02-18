@@ -5,12 +5,7 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public record Movie(
-    String title,
-    Duration runningTime,
-    BigDecimal price,
-    boolean special
-) {
+public record Movie(String title, Duration runningTime, BigDecimal price, boolean special) {
     public Movie {Stream.of(title, runningTime, price).forEach(Objects::requireNonNull);}
 
     public Movie(String title, Duration runningTime, double price) {

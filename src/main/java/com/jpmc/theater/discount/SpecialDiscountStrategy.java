@@ -11,6 +11,10 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
+/**
+ * Apply percentage discount ({@linkplain #getDiscount()}) if movie is special
+ * ({@linkplain Movie#special()} is true).
+ */
 @Value
 @RequiredArgsConstructor
 public class SpecialDiscountStrategy implements DiscountStrategy {

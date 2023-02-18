@@ -18,10 +18,7 @@ import org.junit.jupiter.api.Test;
 class ListIndexDiscountStrategyTest {
     private final Movie movie = new Movie("title", Duration.ofHours(1), 10);
     private final Schedule schedule = new Schedule(
-        Stream.of(
-            new Showing(movie, "9:00"),
-            new Showing(movie, "10:00")
-        )
+        Stream.of(new Showing(movie, "9:00"), new Showing(movie, "10:00"))
     );
     private final DiscountStrategy strategy =
      new ListIndexDiscountStrategy(1, new BigDecimal("2.00"));
@@ -29,8 +26,7 @@ class ListIndexDiscountStrategyTest {
     @Test
     void testMiss() {
         Assertions.assertEquals(
-            BigDecimal.ZERO,
-            strategy.getDiscount(LocalDate.of(2023, 2, 17), schedule, 0)
+            BigDecimal.ZERO, strategy.getDiscount(LocalDate.of(2023, 2, 17), schedule, 0)
         );
     }
 

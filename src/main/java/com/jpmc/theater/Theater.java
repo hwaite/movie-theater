@@ -34,7 +34,7 @@ public class Theater {
      new Movie("The Batman", Duration.ofMinutes(95), 9, false);
 
     /** Sample showings used in main method and unit tests. */
-    public static final Iterable<Showing> DEFAULT_SHOWINGS = List.of(
+    public static final Iterable<? extends Showing> DEFAULT_SHOWINGS = List.of(
         new Showing(TURNING_RED, "9:00"),
         new Showing(SPIDER_MAN, "11:00"),
         new Showing(THE_BATMAN, "12:50"),
@@ -46,7 +46,8 @@ public class Theater {
         new Showing(THE_BATMAN, "23:00")
     );
 
-    private static final Iterable<DiscountStrategy> DEFAULT_DISCOUNT_STRATEGIES = List.of(
+    private static final Iterable<? extends DiscountStrategy> DEFAULT_DISCOUNT_STRATEGIES =
+     List.of(
         // $1 on 7th of the month
         new DayOfMonthDiscountStrategy(7, 1),
 
@@ -61,7 +62,7 @@ public class Theater {
 
         // 25% 11:00-16:00
         new TimeSpanDiscountStrategy("11:00", "16:00", 0.25)
-    );
+     );
 
 
     @NonNull

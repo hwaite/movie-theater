@@ -9,6 +9,10 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
+/**
+ * Apply fixed discount {@linkplain #getDiscount()} to nth movie of the day
+ * (where n = {@linkplain #getIdx()}).
+ */
 @Value
 @RequiredArgsConstructor
 public class ListIndexDiscountStrategy implements DiscountStrategy {

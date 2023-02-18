@@ -11,6 +11,10 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
+/**
+ * Apply percentage discount {@linkplain #getDiscount()} if showing starts within specified
+ * range (between {@linkplain #getStart()} and {@linkplain #getEnd()}).
+ */
 @Value
 @RequiredArgsConstructor
 public class TimeSpanDiscountStrategy implements DiscountStrategy {

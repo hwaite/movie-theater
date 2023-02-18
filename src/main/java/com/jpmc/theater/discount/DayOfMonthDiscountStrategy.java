@@ -9,6 +9,10 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
+/**
+ * Discount fixed amount ({@linkplain #getDiscount()}) on a particular day of the month
+ * ({@linkplain #getDayOfMonth()}).
+ */
 @Value
 @RequiredArgsConstructor
 public class DayOfMonthDiscountStrategy implements DiscountStrategy {
